@@ -29,16 +29,29 @@ type Options struct {
 	// number of children per node
 	Degree int `json:"degree"`
 
-	// if set True, values inserted must be unique, othervise values can repeat
+	// if set true, values inserted must be unique, othervise values can repeat
 	// but BPTree will add extra bytes at end of key to maintain uniqueness
 	Uniq bool `json:"uniq"`
+
+	// Max count of in-memory cached nodes to avoid io
+	CacheSize int `json:"cache_size"`
 }
 
+// PutOptions tells bptree how to put kev-value pair
 type PutOptions struct {
+	// if set true, will try to find key-value pair with given key and update value.
+	// Othervise will insert new key-value pair
 	Update bool
 }
 
+// ScanOptions tells bptree how to start tree scan
 type ScanOptions struct {
+	// if Key present, scan will start from given key
 	Key [][]byte
-	Reverse, Strict bool
+
+	// if set true, scan will be in decreasing order on keys.
+	Reverse bool
+
+	// if set true, given key will be included in scan.
+	Strict bool
 }

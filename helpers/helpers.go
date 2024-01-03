@@ -1,7 +1,11 @@
+// Package helpers provides helpful functions which are frequently used
+// in bptree package
 package helpers
 
 import "bytes"
 
+// CompareMatrix is equivalent of bytes.Compare but for slice of bytes slices.
+// Returns -1 if a < b, 0 if a == b, 1 if a > b
 func CompareMatrix(a, b [][]byte) int {
 	var cmp int
 	for i := range a {
@@ -13,6 +17,7 @@ func CompareMatrix(a, b [][]byte) int {
 	return cmp
 }
 
+// Copy returns copy of matrix
 func Copy(matrix [][]byte) [][]byte {
 	cp := make([][]byte, len(matrix))
 	for i := range cp {

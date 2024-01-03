@@ -1,10 +1,7 @@
-// Package index defines common interface and errors for indexing implementations
-// to use.
+// Package customerrors defines errors that can occur while using bptree
 package customerrors
 
-import (
-	"errors"
-)
+import "errors"
 
 var (
 	// ErrKeyNotFound should be returned from lookup operations when the
@@ -23,5 +20,7 @@ var (
 	// (put/del) is attempted on a readonly.
 	ErrImmutable = errors.New("operation not allowed in read-only mode")
 	
+	// ErrNotFound should be returned when trying update key-value pair
+	// and key not found in bptree
 	ErrNotFound = errors.New("not found")
 )

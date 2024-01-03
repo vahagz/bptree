@@ -5,33 +5,39 @@ import (
 )
 
 const (
-	magic         = 0xD0D
+	// version of bptree implementation. Used to determine incompatible
+	// versions of bptree package.
 	version       = uint8(0x1)
+
+	// metadataSize is count of bytes necessary to store metadata on disk.
 	metadataSize  = 36 + allocator.PointerSize
+
+	// uniquenessBit is index of bit in node flags.
 	uniquenessBit = 0b00000001
 )
 
-// metadata represents the metadata for the B+ tree stored in a file.
+// metadata represents the metadata for the bptree stored in a file.
 type metadata struct {
 	// temporary state info
 	dirty bool
 
 	// actual metadata
-	magic      uint16              // magic marker to identify B+ tree.
-	version    uint8               // version of implementation
-	flags      uint8               // flags
-	suffixCols uint16              // columns count of suffix in key
-	suffixSize uint16              // maximum suffix size allowed
-	keyCols    uint16              // columns count in key
-	keySize    uint16              // maximum key size allowed
-	valSize    uint16              // maximum value size allowed
-	pageSize   uint32              // page size used to initialize
-	degree     uint16              // number of entries per node
-	size       uint64              // number of entries in the tree
-	counter    uint64              // counter increases on every insertion
-	root       allocator.Pointable // pointer to root node
+	magic      uint16              // magic marker to identify bptree.
+	version    uint8               // version of implementation.
+	flags      uint8               // flags.
+	suffixCols uint16              // columns count of suffix in key.
+	suffixSize uint16              // maximum suffix size allowed.
+	keyCols    uint16              // columns count in key.
+	keySize    uint16              // maximum key size allowed.
+	valSize    uint16              // maximum value size allowed.
+	pageSize   uint32              // page size used to initialize.
+	degree     uint16              // number of entries per node.
+	size       uint64              // number of entries in the tree.
+	counter    uint64              // counter increases on every insertion.
+	root       allocator.Pointable // pointer to root node.
 }
 
+// implementation of encoding.BinaryMarshaler interface
 func (m metadata) MarshalBinary() ([]byte, error) {
 	buf := make([]byte, metadataSize)
 	rootPtrBytes, err := m.root.MarshalBinary()
@@ -55,6 +61,7 @@ func (m metadata) MarshalBinary() ([]byte, error) {
 	return buf, nil
 }
 
+// implementation of encoding.BinaryUnmarshaler interface
 func (m *metadata) UnmarshalBinary(d []byte) error {
 	m.magic = bin.Uint16(d[0:2])
 	m.version = d[2]

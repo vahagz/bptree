@@ -10,53 +10,65 @@ import (
 )
 
 const (
+	// leafNodeHeaderSz is count of bytes necessary to store leaf node header on disk.
 	leafNodeHeaderSz     = 3 + 3 * allocator.PointerSize
+	
+	// internalNodeHeaderSz is count of bytes necessary to store leaf node header on disk.
 	internalNodeHeaderSz = 3 + 2 * allocator.PointerSize
 
 	flagLeafNode     = uint8(0b00000000)
 	flagInternalNode = uint8(0b00000001)
 )
 
+// internalNodeSize returns count of bytes necessary to store internal node on disk.
 func internalNodeSize(degree, keySize, keyCols int) int {
 	return internalNodeHeaderSz + (degree - 1) * (2 + allocator.PointerSize + keySize + keyCols * 2)
 }
 
+// internalNodeSize returns count of bytes necessary to store leaf node on disk.
 func leafNodeSize(degree, keySize, keyCols, valSize int) int {
 	return leafNodeHeaderSz + (degree - 1) * (4 + valSize + keySize + keyCols * 2)
 }
 
+// entry is in-memory key-value pair.
 type entry struct {
 	key [][]byte
 	val []byte
 }
 
-// node represents an internal or leaf node in the B+ tree.
+// node represents an internal or leaf node in the bptree.
 type node struct {
 	// configs for read/write
 	dirty bool
+
+	// bptree metadata
 	meta  *metadata
 
 	// node data
-	dummyPtr allocator.Pointable
-	right    allocator.Pointable
-	left     allocator.Pointable
-	parent   allocator.Pointable
-	entries  []entry
-	children []allocator.Pointable
+	dummyPtr allocator.Pointable   // used to generate new pointers.
+	right    allocator.Pointable   // pointer to right leaf node. Is nil if node is internal.
+	left     allocator.Pointable   // pointer to left leaf node. Is nil if node is internal.
+	parent   allocator.Pointable   // pointer to parent node. Is nil if node is root.
+	entries  []entry               // key-value pairs of node. If node is internal val is nil.
+	children []allocator.Pointable // pointers in children of internal node. Nil if node is leaf.
 }
 
+// implementation of cache.pointable interface
 func (n *node) IsDirty() bool {
 	return n.dirty
 }
 
+// implementation of cache.pointable interface
 func (n *node) Dirty(v bool) {
 	n.dirty = v
 }
 
+// implementation of cache.pointable interface
 func (n *node) IsNil() bool {
 	return n == nil
 }
 
+// implementation of cache.pointable interface
 func (n *node) IsFull() bool {
 	return len(n.entries) >= int(n.meta.degree)
 }
@@ -102,18 +114,20 @@ func (n *node) insertEntry(idx int, e entry) {
 	n.entries[idx] = e
 }
 
+// appendEntry appends entry at the end of entries
 func (n *node) appendEntry(e entry) {
 	n.Dirty(true)
 	n.entries = append(n.entries, e)
 }
 
+// appendEntry appends child pointer at the end of children
 func (n *node) appendChild(p allocator.Pointable) {
 	n.Dirty(true)
 	n.children = append(n.children, p)
 }
 
-// removeAt removes the entry at given index and returns the value
-// that existed.
+// removeEntries removes entries in range [from; to) and
+// returns removed entries.
 func (n *node) removeEntries(from, to int) []entry {
 	n.Dirty(true)
 	e := append(make([]entry, 0, to-from), n.entries[from:to]...)
@@ -121,6 +135,8 @@ func (n *node) removeEntries(from, to int) []entry {
 	return e
 }
 
+// removeChildren removes children in range [from; to) and
+// returns removed pointers.
 func (n *node) removeChildren(from, to int) []allocator.Pointable {
 	n.Dirty(true)
 	p := append(make([]allocator.Pointable, 0, to-from), n.children[from:to]...)
@@ -140,6 +156,7 @@ func (n *node) update(entryIdx int, val []byte) {
 // a leaf node.)
 func (n *node) isLeaf() bool { return len(n.children) == 0 }
 
+// implementation of Stringer interface
 func (n *node) String() string {
 	s := "{"
 	for _, e := range n.entries {
@@ -154,6 +171,7 @@ func (n *node) String() string {
 	return s
 }
 
+// size returns count of bytes necessary to store this node
 func (n *node) size() int {
 	sz := 0
 	if n.isLeaf() {
@@ -180,6 +198,7 @@ func (n *node) size() int {
 	return sz
 }
 
+// implementation of encoding.BinaryMarshaler interface
 func (n *node) MarshalBinary() ([]byte, error) {
 	buf := make([]byte, n.size())
 	offset := 0
@@ -287,6 +306,7 @@ func (n *node) MarshalBinary() ([]byte, error) {
 	return buf, nil
 }
 
+// implementation of encoding.BinaryUnmarshaler interface
 func (n *node) UnmarshalBinary(d []byte) error {
 	if n == nil {
 		return errors.New("cannot unmarshal into nil node")
