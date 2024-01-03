@@ -100,6 +100,7 @@ type BPlusTree struct {
 // WriteAll writes all the nodes marked 'dirty' to the underlying pager.
 func (tree *BPlusTree) WriteAll() error {
 	tree.mu.Lock()
+	defer tree.mu.Unlock()
 	return tree.writeAll()
 }
 
