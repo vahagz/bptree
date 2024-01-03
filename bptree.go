@@ -126,7 +126,7 @@ func (tree *BPlusTree) Close() error {
 		return nil
 	}
 
-	_ = tree.WriteAll() // write if any nodes are pending
+	_ = tree.writeAll() // write if any nodes are pending
 	err := tree.heap.Close()
 	tree.heap = nil
 	return err
