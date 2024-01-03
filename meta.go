@@ -10,7 +10,7 @@ const (
 	version       = uint8(0x1)
 
 	// metadataSize is count of bytes necessary to store metadata on disk.
-	metadataSize  = 36 + allocator.PointerSize
+	metadataSize  = 40 + allocator.PointerSize
 
 	// uniquenessBit is index of bit in node flags.
 	uniquenessBit = 0b00000001
@@ -34,6 +34,7 @@ type metadata struct {
 	degree     uint16              // number of entries per node.
 	size       uint64              // number of entries in the tree.
 	counter    uint64              // counter increases on every insertion.
+	cacheSize  uint32              // maximum count of in-memory cached nodes to avoid io
 	root       allocator.Pointable // pointer to root node.
 }
 
@@ -57,7 +58,8 @@ func (m metadata) MarshalBinary() ([]byte, error) {
 	bin.PutUint16(buf[18:20], m.degree)
 	bin.PutUint64(buf[20:28], m.size)
 	bin.PutUint64(buf[28:36], m.counter)
-	copy(buf[36:], rootPtrBytes)
+	bin.PutUint32(buf[36:40], m.cacheSize)
+	copy(buf[40:], rootPtrBytes)
 	return buf, nil
 }
 
@@ -75,6 +77,7 @@ func (m *metadata) UnmarshalBinary(d []byte) error {
 	m.degree = bin.Uint16(d[18:20])
 	m.size = bin.Uint64(d[20:28])
 	m.counter = bin.Uint64(d[28:36])
-	m.root.UnmarshalBinary(d[36:])
+	m.cacheSize = bin.Uint32(d[36:40])
+	m.root.UnmarshalBinary(d[40:])
 	return nil
 }

@@ -74,7 +74,7 @@ func Open(fileName string, opts *Options) (*BPlusTree, error) {
 		heap: heap,
 	}
 
-	tree.cache = cache.NewCache[*node](10000, tree.newNode)
+	tree.cache = cache.NewCache[*node](opts.CacheSize, tree.newNode)
 
 	if err := tree.open(opts); err != nil {
 		_ = tree.Close()
@@ -539,6 +539,7 @@ func (tree *BPlusTree) init(opts *Options) error {
 		valSize:    uint16(opts.MaxValueSize),
 		counter:    0,
 		degree:     uint16(opts.Degree),
+		cacheSize:  uint32(opts.CacheSize),
 	}
 
 	if !opts.Uniq && opts.SuffixCols == 0 {
