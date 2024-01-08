@@ -1,0 +1,6 @@
+[submodule "pkg/disk-allocator"]
+	path = pkg/disk-allocator
+	url = https://github.com/vahagz/disk-allocator
+[submodule "pkg/pager"]
+	path = pkg/pager
+	url = https://github.com/vahagz/pager
