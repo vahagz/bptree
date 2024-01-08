@@ -41,8 +41,7 @@ const (
 
 // Open opens the named file as a bptree index file and returns an instance
 // bptree for use. Use ":memory:" for an in-memory bptree instance for quick
-// testing setup. Degree of the tree is computed based on maxKeySize and pageSize
-// used by the pager. If nil options are provided, defaultOptions will be used.
+// testing setup.
 func Open(fileName string, opts *Options) (*BPlusTree, error) {
 	if opts.Degree < 5 {
 		return nil, errors.New("degree must be >= 5")
