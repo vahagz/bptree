@@ -4,7 +4,7 @@ go 1.19
 
 replace (
 	github.com/vahagz/disk-allocator v0.0.2 => ./pkg/disk-allocator
-	github.com/vahagz/pager v0.0.1 => ./pkg/disk-allocator/pkg/pager
+	github.com/vahagz/pager v0.0.1 => ./pkg/disk-allocator/pkg/rbtree/pkg/pager
 )
 
 require (
