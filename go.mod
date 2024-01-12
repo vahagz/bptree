@@ -3,8 +3,9 @@ module github.com/vahagz/bptree
 go 1.19
 
 replace (
-	github.com/vahagz/disk-allocator v0.0.2 => ./pkg/disk-allocator
+	github.com/vahagz/disk-allocator/heap v0.0.2 => ./pkg/disk-allocator/heap
 	github.com/vahagz/pager v0.0.1 => ./pkg/disk-allocator/pkg/rbtree/pkg/pager
+	github.com/vahagz/rbtree v0.0.1 => ./pkg/disk-allocator/pkg/rbtree
 )
 
 require (
@@ -19,6 +20,6 @@ require (
 	github.com/edsrzf/mmap-go v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/vahagz/rbtree v0.0.1 // indirect
-	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect
+	golang.org/x/sys v0.16.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
