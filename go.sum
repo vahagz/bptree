@@ -10,10 +10,16 @@ github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcU
 github.com/stretchr/testify v1.8.4/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
 github.com/vahagz/disk-allocator/heap v0.0.0-20240122075818-06b237b14a8d h1:KmwObgLUvcG6XGTvLxER+sWz8XNIlwJaRRjuUmF2m/s=
 github.com/vahagz/disk-allocator/heap v0.0.0-20240122075818-06b237b14a8d/go.mod h1:aci8otpLuY6DMAoZv+YrPoAIyBpgs8fwVs+9o1mtxxg=
+github.com/vahagz/disk-allocator/heap v0.0.0-20240123101011-e2cffd0e0e6f h1:qFc4JupA5aGVy2hUPSlnP7LMxz3rQwphWs+KOHXdpGM=
+github.com/vahagz/disk-allocator/heap v0.0.0-20240123101011-e2cffd0e0e6f/go.mod h1:7SYID+LV1Cr8LbvPrZeKBkfUJ5JzrTrYYeKoeZRuBGk=
 github.com/vahagz/pager v0.0.2-0.20240119104351-00bd41073fa5 h1:+2uLos/fQOqhYZWlfRTKoQ9T0I/o1jubYMYMaLXLP2s=
 github.com/vahagz/pager v0.0.2-0.20240119104351-00bd41073fa5/go.mod h1:46G/eN1+gw4I5FgyY2sIFDgAJuQvwNADs49wTKqfyOk=
+github.com/vahagz/pager v0.0.2-0.20240122134012-0f17af58b631 h1:jhaslcweZgv+wTR+2XqjdcgvhlGIpIoez3vpUzba3gg=
+github.com/vahagz/pager v0.0.2-0.20240122134012-0f17af58b631/go.mod h1:46G/eN1+gw4I5FgyY2sIFDgAJuQvwNADs49wTKqfyOk=
 github.com/vahagz/rbtree v0.0.2-0.20240122075736-1427c3e7859a h1:kjNP1k5Narsa0Wny7uEvbzrfWksb/1fjThMojbl6G/U=
 github.com/vahagz/rbtree v0.0.2-0.20240122075736-1427c3e7859a/go.mod h1:QSYafgWZHgmAEgB1dCWFxzQM7yUR1ytdJktbvaGdikM=
+github.com/vahagz/rbtree v0.0.2-0.20240123100955-8e488cf14cf5 h1:HzHYoR8PDgHdsxEQ4C8GKjkMcepMW5x5jgHGC7HsSws=
+github.com/vahagz/rbtree v0.0.2-0.20240123100955-8e488cf14cf5/go.mod h1:+vLQ7ecxFhcZWnGoscis+9Nla+wgGV1GJHAebsqFG04=
 golang.org/x/sys v0.16.0 h1:xWw16ngr6ZMtmxDyKyIgsE93KNKz5HKmMa3b8ALHidU=
 golang.org/x/sys v0.16.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
