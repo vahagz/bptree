@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.8.4
-	github.com/vahagz/disk-allocator/heap v0.0.0-20240124141934-a045858da972
+	github.com/vahagz/disk-allocator/heap v0.0.0-20240125142055-f5edeff2c2bc
 )
 
 require (
