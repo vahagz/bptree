@@ -18,7 +18,7 @@ func (tree *BPlusTree) Scan(
 	tree.mu.RLock()
 	defer tree.mu.RUnlock()
 
-	if tree.meta.size == 0 {
+	if tree.meta.count == 0 {
 		return nil
 	}
 	

@@ -32,7 +32,7 @@ type metadata struct {
 	valSize    uint16              // maximum value size allowed.
 	pageSize   uint32              // page size used to initialize.
 	degree     uint16              // number of entries per node.
-	size       uint64              // number of entries in the tree.
+	count      uint64              // number of entries in the tree.
 	counter    uint64              // counter increases on every insertion.
 	cacheSize  uint32              // maximum count of in-memory cached nodes to avoid io
 	root       allocator.Pointable // pointer to root node.
@@ -56,7 +56,7 @@ func (m metadata) MarshalBinary() ([]byte, error) {
 	bin.PutUint16(buf[12:14], m.valSize)
 	bin.PutUint32(buf[14:18], m.pageSize)
 	bin.PutUint16(buf[18:20], m.degree)
-	bin.PutUint64(buf[20:28], m.size)
+	bin.PutUint64(buf[20:28], m.count)
 	bin.PutUint64(buf[28:36], m.counter)
 	bin.PutUint32(buf[36:40], m.cacheSize)
 	copy(buf[40:], rootPtrBytes)
@@ -75,7 +75,7 @@ func (m *metadata) UnmarshalBinary(d []byte) error {
 	m.valSize = bin.Uint16(d[12:14])
 	m.pageSize = bin.Uint32(d[14:18])
 	m.degree = bin.Uint16(d[18:20])
-	m.size = bin.Uint64(d[20:28])
+	m.count = bin.Uint64(d[20:28])
 	m.counter = bin.Uint64(d[28:36])
 	m.cacheSize = bin.Uint32(d[36:40])
 	m.root.UnmarshalBinary(d[40:])

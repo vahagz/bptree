@@ -63,7 +63,7 @@ func (tree *BPlusTree) DelMem(key, suffix [][]byte) (int, error) {
 	}
 
 	if count > 0 {
-		tree.meta.size -= uint64(count)
+		tree.meta.count -= uint64(count)
 		tree.meta.dirty = true
 	}
 

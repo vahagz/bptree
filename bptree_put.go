@@ -45,7 +45,7 @@ func (tree *BPlusTree) PutMem(key, suffix [][]byte, val []byte, opt PutOptions) 
 
 	if success && !opt.Update {
 		tree.meta.counter++
-		tree.meta.size++
+		tree.meta.count++
 		tree.meta.dirty = true
 	}
 
