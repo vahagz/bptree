@@ -100,15 +100,16 @@ func (tree *BPlusTree) WriteAll() error {
 	return tree.writeAll()
 }
 
-// PrepareSpace allocates size bytes on underlying bptree file.
+// PrepareSpace allocates size bytes on underlying file.
 // This is usefull if big amount of data is going to be inserted.
 // It's increases performance of insertion.
-func (tree *BPlusTree) PrepareSpace(size uint32) {
-	tree.heap.PreAlloc(size)
-}
+func (tree *BPlusTree) PrepareSpace(size uint32) { tree.heap.PreAlloc(size) }
 
-// Size returns the number of entries in the entire tree.
-func (tree *BPlusTree) Size() int64 { return int64(tree.meta.size) }
+// Count returns the number of entries in the entire tree.
+func (tree *BPlusTree) Count() uint64 { return tree.meta.count }
+
+// HeapSize returns size of the underlying file
+func (tree *BPlusTree) HeapSize() uint64 { return tree.heap.Size() }
 
 // IsUniq returns true if tree keys are configured as uniq. Othervise false.
 func (tree *BPlusTree) IsUniq() bool { return helpers.GetBit(tree.meta.flags, uniquenessBit) }
@@ -146,7 +147,7 @@ func (tree *BPlusTree) Options() Options {
 func (tree *BPlusTree) String() string {
 	return fmt.Sprintf(
 		"BPlusTree{file='%s', size=%d, degree=%d}",
-		tree.file, tree.Size(), tree.meta.degree,
+		tree.file, tree.Count(), tree.meta.degree,
 	)
 }
 
@@ -527,7 +528,7 @@ func (tree *BPlusTree) init(opts *Options) error {
 		dirty:      true,
 		version:    version,
 		flags:      0,
-		size:       0,
+		count:      0,
 		pageSize:   uint32(opts.PageSize),
 		suffixCols: uint16(opts.SuffixCols),
 		suffixSize: uint16(opts.MaxSuffixSize),
