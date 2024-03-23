@@ -307,6 +307,13 @@ func (tree *BPlusTree) CheckConsistency(list [][]byte) bool {
 // with key and suffix.
 func (tree *BPlusTree) validateAndMerge(key, suffix [][]byte) ([][]byte, error) {
 	key = helpers.Copy(key)
+	
+	if !tree.IsUniq() && suffix == nil {
+		suffix = make([][]byte, 1)
+		suffix[0] = make([]byte, 8)
+		binary.BigEndian.PutUint64(suffix[0], tree.meta.counter)
+	}
+
 	if suffix != nil {
 		for _, v := range suffix {
 			key = append(key, append(make([]byte, 0, len(v)), v...))
