@@ -70,7 +70,7 @@ func Open(fileName string, opts *Options) (*BPlusTree, error) {
 		heap: heap,
 	}
 
-	tree.cache = cache.NewCache[*node](opts.CacheSize, tree.newNode)
+	tree.cache = cache.NewCache(opts.CacheSize, tree.newNode)
 
 	if err := tree.open(opts); err != nil {
 		_ = tree.Close()
